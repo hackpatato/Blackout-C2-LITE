@@ -1,1 +1,1 @@
-# Blackout-C2-L-TE
+# Blackout-C2-LITE
