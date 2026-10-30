@@ -11,7 +11,7 @@ type SystemUser struct {
 	Name     string `json:"name"`
 	Uid      string `json:"uid"`
 	Gid      string `json:"gid"`
-	HomeDir  string `json:"gid"`
+	HomeDir  string `json:"HomeDir"`
 }
 
 func Whoami() *SystemUser {
